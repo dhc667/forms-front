@@ -1,5 +1,6 @@
 import type { Input } from '@/lib/form-builder/types/inputs';
 import { InlineInput } from '@/components/ui/inline-input';
+import { TextAreaInput } from '@/components/ui/textarea-input';
 
 interface InputRendererProps {
   input: Input;
@@ -45,6 +46,19 @@ export function InputRenderer({ input, onRightClick, preview = false }: InputRen
           type="date"
           min={input.validation?.min?.toISOString().split('T')[0]}
           max={input.validation?.max?.toISOString().split('T')[0]}
+        />
+      );
+
+    case 'textarea-input':
+      return (
+        <TextAreaInput
+          id={input.id}
+          required={input.required}
+          onContextMenu={preview ? undefined : (e: React.MouseEvent) => onRightClick(input, e)}
+          disabled={preview}
+          className={preview ? 'pointer-events-none' : undefined}
+          placeholder={input.placeholder}
+          rows={input.validation?.rows || 4}
         />
       );
 

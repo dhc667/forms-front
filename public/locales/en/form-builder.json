@@ -5,7 +5,7 @@
     "emailInput": "Email",
     "phoneInput": "Phone",
     "dateInput": "Date",
-    "textarea": "Text Area",
+    "textareaInput": "Text Area",
     "basicTable": "Basic Table",
     "radioGroup": "Single Choice",
     "checkboxGroup": "Multiple Choice"
@@ -13,5 +13,28 @@
   "options": {
     "radio": ["Option 1", "Option 2", "Option 3"],
     "checkbox": ["Option 1", "Option 2", "Option 3"]
+  },
+  "sidebarLabels": {
+    "textInput": "Text Input:",
+    "numberInput": "Number:",
+    "emailInput": "Email:",
+    "phoneInput": "Phone:",
+    "dateInput": "Date:",
+    "textareaInput": "Text Area:"
+  },
+  "placeholders": {
+    "textInput": "Enter text...",
+    "numberInput": "0",
+    "emailInput": "email@example.com",
+    "phoneInput": "+1 (555) 123-4567",
+    "textareaInput": "Enter longer text here..."
+  },
+  "table": {
+    "column1": "Column 1",
+    "column2": "Column 2",
+    "data1": "Data 1",
+    "data2": "Data 2",
+    "data3": "Data 3",
+    "data4": "Data 4"
   }
 }

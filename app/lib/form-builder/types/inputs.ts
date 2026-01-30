@@ -47,4 +47,14 @@ export type SelectionInput = InputBase & {
   required?: boolean;
 }
 
-export type Input = TextInput | DateInput | NumberInput | ReferenceInput | SelectionInput;
+export type TextAreaInput = InputBase & {
+  type: 'textarea-input';
+  placeholder?: string;
+  validation?: {
+    minLength?: number;
+    maxLength?: number;
+    rows?: number;
+  };
+}
+
+export type Input = TextInput | DateInput | NumberInput | TextAreaInput | ReferenceInput | SelectionInput;

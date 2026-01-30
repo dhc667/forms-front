@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { ChevronRight, Search, Type, Table, List, Hash, Calendar, Mail, Phone } from 'lucide-react';
+import { ChevronRight, Type, Table, List } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
+import { PreviewRenderer } from '@/components/form-renderers/PreviewRenderer';
+import { createSidebarElements } from '@/lib/form-builder/sidebar-elements';
+import type { QuestionComponent } from '@/lib/form-builder/types/question';
 
 interface ComponentItem {
   id: string;
-  title: string;
-  icon: React.ReactNode;
   preview: React.ReactNode;
+  schema: QuestionComponent;
 }
 
 interface CollapsibleGroupProps {
@@ -41,17 +42,11 @@ function CollapsibleGroup({ title, icon, items, defaultOpen = false, onDragStart
         {items.map((item) => (
           <div
             key={item.id}
-            className="bg-background border border-border rounded p-3 cursor-move hover:bg-muted/50 transition-colors"
+            className="border border-dashed border-border/30 rounded p-2 cursor-move hover:bg-muted/20 transition-all bg-card"
             draggable
             onDragStart={() => onDragStart(item)}
           >
-            <div className="flex items-center gap-2 mb-2">
-              {item.icon}
-              <span className="text-sm font-medium">{item.title}</span>
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {item.preview}
-            </div>
+            {item.preview}
           </div>
         ))}
       </CollapsibleContent>
@@ -60,136 +55,50 @@ function CollapsibleGroup({ title, icon, items, defaultOpen = false, onDragStart
 }
 
 export function Sidebar() {
-  const [searchQuery, setSearchQuery] = useState('');
   const { t } = useTranslation(['navigation', 'form-builder']);
 
-  // Get translated option labels
-  const radioOptions = t('options.radio', { ns: 'form-builder', returnObjects: true }) as string[];
-  const checkboxOptions = t('options.checkbox', { ns: 'form-builder', returnObjects: true }) as string[];
+  // Generate sidebar elements with current language
+  const sidebarElementFactories = createSidebarElements(t);
 
+  // Create component groups
   const componentGroups = [
     {
       title: t('textComponents'),
       icon: <Type className="h-4 w-4" />,
       defaultOpen: true,
-      items: [
-        {
-          id: 'text-input',
-          title: t('components.textInput', { ns: 'form-builder' }),
-          icon: <Type className="h-3 w-3" />,
-          preview: <Input placeholder="Enter text..." className="h-8 text-xs" readOnly />
-        },
-        {
-          id: 'number-input',
-          title: t('components.numberInput', { ns: 'form-builder' }),
-          icon: <Hash className="h-3 w-3" />,
-          preview: <Input type="number" placeholder="0" className="h-8 text-xs" readOnly />
-        },
-        {
-          id: 'email-input',
-          title: t('components.emailInput', { ns: 'form-builder' }),
-          icon: <Mail className="h-3 w-3" />,
-          preview: <Input type="email" placeholder="email@example.com" className="h-8 text-xs" readOnly />
-        },
-        {
-          id: 'phone-input',
-          title: t('components.phoneInput', { ns: 'form-builder' }),
-          icon: <Phone className="h-3 w-3" />,
-          preview: <Input type="tel" placeholder="+1 (555) 123-4567" className="h-8 text-xs" readOnly />
-        },
-        {
-          id: 'date-input',
-          title: t('components.dateInput', { ns: 'form-builder' }),
-          icon: <Calendar className="h-3 w-3" />,
-          preview: <Input type="date" className="h-8 text-xs" readOnly />
-        },
-        {
-          id: 'textarea',
-          title: t('components.textarea', { ns: 'form-builder' }),
-          icon: <Type className="h-3 w-3" />,
-          preview: <textarea className="w-full h-16 px-3 py-2 text-xs border border-border rounded resize-none bg-background" placeholder="Enter longer text..." readOnly />
-        }
-      ]
+      items: sidebarElementFactories
+        .filter(el => el.type === 'text')
+        .map(el => ({
+          id: el.id,
+          preview: <PreviewRenderer element={el.createElement(t)} />,
+          schema: el.createElement(t)
+        }))
     },
     {
       title: t('tables'),
       icon: <Table className="h-4 w-4" />,
       defaultOpen: false,
-      items: [
-        {
-          id: 'basic-table',
-          title: t('components.basicTable', { ns: 'form-builder' }),
-          icon: <Table className="h-3 w-3" />,
-          preview: (
-            <div className="border border-border rounded overflow-hidden">
-              <table className="w-full text-xs">
-                <thead className="bg-muted">
-                  <tr>
-                    <th className="px-2 py-1 text-left border-r">Column 1</th>
-                    <th className="px-2 py-1 text-left">Column 2</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="px-2 py-1 border-r">Data 1</td>
-                    <td className="px-2 py-1">Data 2</td>
-                  </tr>
-                  <tr className="bg-muted/50">
-                    <td className="px-2 py-1 border-r">Data 3</td>
-                    <td className="px-2 py-1">Data 4</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          )
-        }
-      ]
+      items: sidebarElementFactories
+        .filter(el => el.type === 'table')
+        .map(el => ({
+          id: el.id,
+          preview: <PreviewRenderer element={el.createElement(t)} />,
+          schema: el.createElement(t)
+        }))
     },
     {
       title: t('selection'),
       icon: <List className="h-4 w-4" />,
       defaultOpen: false,
-      items: [
-        {
-          id: 'radio-group',
-          title: t('components.radioGroup', { ns: 'form-builder' }),
-          icon: <List className="h-3 w-3" />,
-          preview: (
-            <div className="space-y-1">
-              {radioOptions.map((option, index) => (
-                <label key={index} className="flex items-center gap-2 text-xs">
-                  <input type="radio" name="preview" className="text-primary" readOnly />
-                  {option}
-                </label>
-              ))}
-            </div>
-          )
-        },
-        {
-          id: 'checkbox-group',
-          title: t('components.checkboxGroup', { ns: 'form-builder' }),
-          icon: <List className="h-3 w-3" />,
-          preview: (
-            <div className="space-y-1">
-              {checkboxOptions.map((option, index) => (
-                <label key={index} className="flex items-center gap-2 text-xs">
-                  <input type="checkbox" className="text-primary" readOnly />
-                  {option}
-                </label>
-              ))}
-            </div>
-          )
-        }
-      ]
+      items: sidebarElementFactories
+        .filter(el => el.type === 'selection')
+        .map(el => ({
+          id: el.id,
+          preview: <PreviewRenderer element={el.createElement(t)} />,
+          schema: el.createElement(t)
+        }))
     }
   ];
-
-  const filteredGroups = componentGroups.map(group => ({
-    ...group,
-    items: group.items.filter(item =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  })).filter(group => group.items.length > 0);
 
   const handleDragStart = (component: ComponentItem) => {
     // TODO: Implement drag and drop logic
@@ -199,21 +108,12 @@ export function Sidebar() {
   return (
     <aside className="w-80 bg-primary-light min-h-screen flex flex-col">
       <div className="p-4 border-b border-primary-dark">
-        <h2 className="font-semibold text-lg text-primary-foreground mb-3">{t('components')}</h2>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder={t('searchPlaceholder')}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-background border-border"
-          />
-        </div>
+        <h2 className="font-semibold text-lg text-primary-foreground">{t('components')}</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         <div className="divide-y divide-border">
-          {filteredGroups.map((group) => (
+          {componentGroups.map((group) => (
             <CollapsibleGroup
               key={group.title}
               title={group.title}

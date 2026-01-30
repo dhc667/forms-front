@@ -9,7 +9,7 @@ interface PreviewRendererProps {
 
 export function PreviewRenderer({ element, className }: PreviewRendererProps) {
   return (
-    <div className={`opacity-85 border border-dashed border-border rounded p-2 bg-muted/20 pointer-events-none ${className}`}>
+    <div className={`pointer-events-none ${className}`}>
       <ElementRenderer
         element={element}
         preview={true}
