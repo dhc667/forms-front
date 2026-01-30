@@ -19,7 +19,8 @@
       "@/components/*": ["./app/components/*"],
       "@/styles/*": ["./app/styles/*"],
       "@/context/*": ["./app/context/*"],
-      "@/utils": ["./app/components/ui/utils"]
+      "@/utils": ["./app/components/ui/utils"],
+      "@/lib/*": ["./app/lib/*"]
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,

@@ -2,6 +2,10 @@ import { useState, useMemo } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSearch } from '@/context/SearchContext';
+import { generateFormsData } from '@/lib/debug/data-gen';
+
+// Generate data once outside the component to avoid regeneration on every render
+const GENERATED_DATA = generateFormsData(35);
 
 type SortDirection = 'asc' | 'desc';
 type SortColumn = 'id' | 'titulo' | 'elaborado' | 'revisado' | 'aprobado' | 'fecha';
@@ -22,16 +26,7 @@ export function TableView() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [hoveredColumn, setHoveredColumn] = useState<SortColumn | null>(null);
 
-  const rawData: TableRow[] = Array(17).fill(null).map((_, idx) => ({
-    id: 'RML-08-01',
-    titulo: 'Validación del Peso del Tomate',
-    elaborado: 'Alberto Moreno Pérez',
-    revisado: idx === 0
-      ? 'Rosalía Rodríguez Razck, Alejandra Serrano Jaime'
-      : 'Rosalía Rodríguez Razck',
-    aprobado: 'Dania Díaz Díaz',
-    fecha: '11-08-2024'
-  }));
+  const rawData: TableRow[] = GENERATED_DATA;
 
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
