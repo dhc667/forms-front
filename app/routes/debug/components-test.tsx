@@ -4,8 +4,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { ThemeSwitcher } from "@/components/ui/theme-switcher"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -23,6 +25,9 @@ const formSchema = z.object({
   agree: z.boolean().refine(val => val === true, {
     message: "You must agree to the terms.",
   }),
+  priority: z.enum(["low", "medium", "high"], {
+    required_error: "Please select a priority level.",
+  }),
 })
 
 export default function ComponentsTest() {
@@ -33,6 +38,7 @@ export default function ComponentsTest() {
       email: "",
       message: "",
       agree: false,
+      priority: undefined,
     },
   })
 
@@ -43,9 +49,12 @@ export default function ComponentsTest() {
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-2">UI Components Test</h1>
-          <p className="text-muted-foreground">Testing all shadcn/ui components with IFV blue theme</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">UI Components Test</h1>
+            <p className="text-muted-foreground">Testing all shadcn/ui components with IFV blue theme</p>
+          </div>
+          <ThemeSwitcher />
         </div>
 
         {/* Buttons */}
@@ -84,6 +93,65 @@ export default function ComponentsTest() {
               <Badge variant="secondary">Secondary</Badge>
               <Badge variant="destructive">Destructive</Badge>
               <Badge variant="outline">Outline</Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Radio Groups */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Radio Groups</CardTitle>
+            <CardDescription>Exclusive selection components with different layouts</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <h4 className="text-sm font-medium mb-3">Basic Radio Group</h4>
+              <RadioGroup defaultValue="comfortable" className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="default" id="r1" />
+                  <Label htmlFor="r1">Default</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="comfortable" id="r2" />
+                  <Label htmlFor="r2">Comfortable</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="compact" id="r3" />
+                  <Label htmlFor="r3">Compact</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-medium mb-3">Horizontal Layout</h4>
+              <RadioGroup defaultValue="option2" className="flex space-x-6">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option1" id="h1" />
+                  <Label htmlFor="h1">Option 1</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option2" id="h2" />
+                  <Label htmlFor="h2">Option 2</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option3" id="h3" />
+                  <Label htmlFor="h3">Option 3</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-medium mb-3">Disabled States</h4>
+              <RadioGroup defaultValue="enabled" className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="enabled" id="d1" />
+                  <Label htmlFor="d1">Enabled Option</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="disabled" id="d2" disabled />
+                  <Label htmlFor="d2" className="text-muted-foreground">Disabled Option</Label>
+                </div>
+              </RadioGroup>
             </div>
           </CardContent>
         </Card>
@@ -152,6 +220,37 @@ export default function ComponentsTest() {
                         <FormLabel>Agree to terms and conditions</FormLabel>
                         <FormDescription>You must agree to continue.</FormDescription>
                       </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="priority"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>Priority Level</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-1"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="low" id="low" />
+                            <Label htmlFor="low">Low Priority</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="medium" id="medium" />
+                            <Label htmlFor="medium">Medium Priority</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="high" id="high" />
+                            <Label htmlFor="high">High Priority</Label>
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormDescription>Select the priority level for your request.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
