@@ -5,6 +5,7 @@ export type TableCell = Input | LiteralText;
 export type TableRow = TableCell[];
 
 export interface TableElement {
+  id: string;
   type: "table";
   title: string;
   rows: TableRow[];

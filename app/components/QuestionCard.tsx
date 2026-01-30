@@ -1,15 +1,21 @@
 import { Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { ElementRenderer } from '@/components/form-renderers';
+import type { QuestionComponent } from '@/lib/form-builder/types/question';
 
 interface QuestionCardProps {
   questionNumber: number;
-  text?: string;
-  blanks?: { text: string; beforeText: string }[];
+  components: QuestionComponent[]; // Required now
   onDelete: () => void;
+  onElementRightClick?: (element: any, event: React.MouseEvent) => void;
 }
 
-export function QuestionCard({ questionNumber, text, blanks, onDelete }: QuestionCardProps) {
+export function QuestionCard({
+  questionNumber,
+  components,
+  onDelete,
+  onElementRightClick
+}: QuestionCardProps) {
   return (
     <div className="border-2 border-dashed border-primary-light rounded-lg p-6 bg-background relative group">
       <button
@@ -22,20 +28,13 @@ export function QuestionCard({ questionNumber, text, blanks, onDelete }: Questio
       <div className="flex gap-4">
         <span className="text-muted-foreground text-lg">{questionNumber}.</span>
         <div className="flex-1 space-y-4">
-          {text && (
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {text}
-            </p>
-          )}
-
-          {blanks && blanks.map((blank, idx) => (
-            <div key={idx} className="flex items-center gap-2 text-muted-foreground text-sm">
-              <span>{blank.beforeText}</span>
-              <Input
-                type="text"
-                className="border-2 border-primary-light min-w-[200px] h-8"
-              />
-            </div>
+          {/* New form elements rendering */}
+          {components.map((component, idx) => (
+            <ElementRenderer
+              key={component.id || idx}
+              element={component}
+              onRightClick={onElementRightClick || (() => {})}
+            />
           ))}
 
           <div className="flex justify-center gap-3 pt-4">

@@ -6,5 +6,6 @@ import type { TextElement } from "./text";
 export type QuestionComponent = TextElement | TableElement | SelectionElement | ImageElement
 
 export interface Question {
+  id: string;
   components: QuestionComponent[];
 }
