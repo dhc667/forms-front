@@ -53,46 +53,6 @@ export const createSidebarElements = (t: any): SidebarElementFactory[] => [
     })
   },
   {
-    id: 'email-input',
-    type: 'text',
-    createElement: (): TextElement => ({
-      id: 'preview-email-input',
-      type: 'text',
-      components: [
-        {
-          id: 'email-input-label',
-          type: 'embedded-text',
-          content: t('sidebarLabels.emailInput', { ns: 'form-builder' })
-        },
-        {
-          id: 'email-input-field',
-          type: 'text-input',
-          placeholder: t('placeholders.emailInput', { ns: 'form-builder' })
-        }
-      ]
-    })
-  },
-  {
-    id: 'phone-input',
-    type: 'text',
-    createElement: (): TextElement => ({
-      id: 'preview-phone-input',
-      type: 'text',
-      components: [
-        {
-          id: 'phone-input-label',
-          type: 'embedded-text',
-          content: t('sidebarLabels.phoneInput', { ns: 'form-builder' })
-        },
-        {
-          id: 'phone-input-field',
-          type: 'text-input',
-          placeholder: t('placeholders.phoneInput', { ns: 'form-builder' })
-        }
-      ]
-    })
-  },
-  {
     id: 'date-input',
     type: 'text',
     createElement: (): TextElement => ({
@@ -139,45 +99,44 @@ export const createSidebarElements = (t: any): SidebarElementFactory[] => [
     createElement: (): TableElement => ({
       id: 'preview-basic-table',
       type: 'table',
-      title: t('components.basicTable', { ns: 'form-builder' }),
       rows: [
         // Header row
         [
           {
             id: 'table-header-1',
             type: 'embedded-text',
-            content: t('table.column1', { ns: 'form-builder' })
+            content: t('table.texts', { ns: 'form-builder' })
           },
           {
             id: 'table-header-2',
             type: 'embedded-text',
-            content: t('table.column2', { ns: 'form-builder' })
+            content: t('table.numbers', { ns: 'form-builder' })
           }
         ],
         // Data row 1
         [
           {
             id: 'table-data-1',
-            type: 'embedded-text',
-            content: t('table.data1', { ns: 'form-builder' })
+            type: 'text-input',
+            placeholder: t('placeholders.textInput', { ns: 'form-builder' })
           },
           {
             id: 'table-data-2',
-            type: 'embedded-text',
-            content: t('table.data2', { ns: 'form-builder' })
+            type: 'number-input',
+            placeholder: t('placeholders.numberInput', { ns: 'form-builder' })
           }
         ],
         // Data row 2
         [
           {
             id: 'table-data-3',
-            type: 'embedded-text',
-            content: t('table.data3', { ns: 'form-builder' })
+            type: 'text-input',
+            placeholder: t('placeholders.textInput', { ns: 'form-builder' })
           },
           {
             id: 'table-data-4',
-            type: 'embedded-text',
-            content: t('table.data4', { ns: 'form-builder' })
+            type: 'number-input',
+            placeholder: t('placeholders.numberInput', { ns: 'form-builder' })
           }
         ]
       ]

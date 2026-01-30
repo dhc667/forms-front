@@ -3,6 +3,7 @@ import { createLiteralText } from '@/lib/form-builder/types/literal-text';
 import type { FormSchema } from '@/lib/form-builder/types/form';
 import type { Question } from '@/lib/form-builder/types/question';
 import type { TextElement } from '@/lib/form-builder/types/text';
+import type { TextAreaInput } from '@/lib/form-builder/types/inputs';
 import type { TextInput, DateInput, NumberInput } from '@/lib/form-builder/types/inputs';
 import type { SingleSelection, MultipleSelection } from '@/lib/form-builder/types/selection';
 import type { TableElement } from '@/lib/form-builder/types/table';
@@ -106,11 +107,7 @@ export const exampleFormSchema: FormSchema = {
               createLiteralText('Valor'),
             ],
             [
-              {
-                id: generateUUID(),
-                type: 'text-input',
-                placeholder: 'Teléfono'
-              } as TextInput,
+              createLiteralText('Teléfono'),
               {
                 id: generateUUID(),
                 type: 'text-input',
@@ -124,6 +121,29 @@ export const exampleFormSchema: FormSchema = {
                 type: 'text-input',
                 placeholder: 'correo@ejemplo.com'
               } as TextInput
+            ],
+            [
+              createLiteralText('Número'),
+              {
+                id: generateUUID(),
+                type: 'number-input',
+                placeholder: '0'
+              } as NumberInput
+            ],
+            [
+              createLiteralText('Fecha'),
+              {
+                id: generateUUID(),
+                type: 'date'
+              } as DateInput
+            ],
+            [
+              createLiteralText('Área de Texto'),
+              {
+                id: generateUUID(),
+                type: 'textarea-input',
+                placeholder: 'Ingrese texto más largo aquí...'
+              } as TextAreaInput
             ]
           ]
         } as TableElement

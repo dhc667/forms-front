@@ -1,6 +1,8 @@
 import type { QuestionComponent } from '@/lib/form-builder/types/question';
+import type { TableCell, TableElement } from '@/lib/form-builder/types/table';
 import { TextRenderer } from './TextRenderer';
 import { SelectionRenderer } from './SelectionRenderer';
+import { TableRenderer } from './TableRenderer';
 
 interface ElementRendererProps {
   element: QuestionComponent;
@@ -19,12 +21,7 @@ export function ElementRenderer({ element, onRightClick, preview = false }: Elem
     case 'text':
       return <TextRenderer element={element as any} onRightClick={onRightClick} preview={preview} />;
     case 'table':
-      return (
-        <div onContextMenu={handleContextMenu} className="inline-block">
-          {/* Table content - future implementation */}
-          Table Element
-        </div>
-      );
+      return <TableRenderer element={element as any} onRightClick={onRightClick} preview={preview} />;
     case 'multiple-selection':
     case 'single-selection':
       return <SelectionRenderer element={element as any} onRightClick={onRightClick} preview={preview} />;

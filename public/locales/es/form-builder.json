@@ -1,15 +1,4 @@
 {
-  "components": {
-    "textInput": "Entrada de Texto",
-    "numberInput": "Número",
-    "emailInput": "Correo Electrónico",
-    "phoneInput": "Teléfono",
-    "dateInput": "Fecha",
-    "textareaInput": "Área de Texto",
-    "basicTable": "Tabla Básica",
-    "radioGroup": "Selección Única",
-    "checkboxGroup": "Selección Múltiple"
-  },
   "options": {
     "radio": ["Opción 1", "Opción 2", "Opción 3"],
     "checkbox": ["Opción 1", "Opción 2", "Opción 3"]
@@ -17,8 +6,6 @@
   "sidebarLabels": {
     "textInput": "Entrada de Texto:",
     "numberInput": "Número:",
-    "emailInput": "Correo Electrónico:",
-    "phoneInput": "Teléfono:",
     "dateInput": "Fecha:",
     "textareaInput": "Área de Texto:",
     "radioGroupTitle": "Selecciona una opción",
@@ -32,11 +19,7 @@
     "textareaInput": "Ingrese texto más largo aquí..."
   },
   "table": {
-    "column1": "Columna 1",
-    "column2": "Columna 2",
-    "data1": "Dato 1",
-    "data2": "Dato 2",
-    "data3": "Dato 3",
-    "data4": "Dato 4"
+    "texts": "Textos",
+    "numbers": "Números"
   }
 }
