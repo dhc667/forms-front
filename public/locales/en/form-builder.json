@@ -1,0 +1,17 @@
+{
+  "components": {
+    "textInput": "Text Input",
+    "numberInput": "Number",
+    "emailInput": "Email",
+    "phoneInput": "Phone",
+    "dateInput": "Date",
+    "textarea": "Text Area",
+    "basicTable": "Basic Table",
+    "radioGroup": "Single Choice",
+    "checkboxGroup": "Multiple Choice"
+  },
+  "options": {
+    "radio": ["Option 1", "Option 2", "Option 3"],
+    "checkbox": ["Option 1", "Option 2", "Option 3"]
+  }
+}

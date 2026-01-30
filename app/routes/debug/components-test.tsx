@@ -11,24 +11,31 @@ import { ThemeSwitcher } from "@/components/ui/theme-switcher"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { useTranslation } from "react-i18next"
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
-  }),
-  agree: z.boolean().refine(val => val === true, {
-    message: "You must agree to the terms.",
-  }),
-  priority: z.enum(["low", "medium", "high"]),
-})
+function createFormSchema() {
+  const { t } = useTranslation("validation");
+
+  return z.object({
+    username: z.string().min(2, {
+      message: t("minLength", { count: 2 }),
+    }),
+    email: z.string().email({
+      message: t("email"),
+    }),
+    message: z.string().min(10, {
+      message: t("minLength", { count: 10 }),
+    }),
+    agree: z.boolean().refine(val => val === true, {
+      message: t("required"),
+    }),
+    priority: z.enum(["low", "medium", "high"]),
+  });
+}
 
 export default function ComponentsTest() {
+  const { t } = useTranslation("common");
+  const formSchema = createFormSchema();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

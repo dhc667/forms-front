@@ -18,6 +18,7 @@
       "~/*": ["./app/*"],
       "@/components/*": ["./app/components/*"],
       "@/styles/*": ["./app/styles/*"],
+      "@/context/*": ["./app/context/*"],
       "@/utils": ["./app/components/ui/utils"]
     },
     "esModuleInterop": true,

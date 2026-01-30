@@ -3,6 +3,7 @@ import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { QuestionCard } from '@/components/QuestionCard';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 type Question = {
   id: number;
@@ -11,6 +12,7 @@ type Question = {
 };
 
 export default function CreateSchemaPage() {
+  const { t } = useTranslation('create-schema');
   const [questions, setQuestions] = useState<Question[]>([
     {
       id: 1,
@@ -60,7 +62,7 @@ export default function CreateSchemaPage() {
               className="w-full border-dashed border-primary-light text-primary hover:bg-primary/5"
             >
               <span className="text-2xl mr-2">+</span>
-              <span>Add Question</span>
+              <span>{t('addQuestion')}</span>
             </Button>
           </div>
         </main>

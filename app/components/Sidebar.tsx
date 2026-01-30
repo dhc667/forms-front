@@ -3,6 +3,7 @@ import { ChevronRight, Search, Type, Table, List, Hash, Calendar, Mail, Phone } 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface ComponentItem {
   id: string;
@@ -27,7 +28,7 @@ function CollapsibleGroup({ title, icon, items, defaultOpen = false, onDragStart
       <CollapsibleTrigger asChild>
         <Button
           variant="ghost"
-          className="w-full justify-between p-3 h-auto font-medium hover:bg-muted/50"
+          className="w-full justify-between p-3 h-auto font-medium hover:bg-muted/50 text-primary-foreground"
         >
           <div className="flex items-center gap-2">
             {icon}
@@ -60,59 +61,64 @@ function CollapsibleGroup({ title, icon, items, defaultOpen = false, onDragStart
 
 export function Sidebar() {
   const [searchQuery, setSearchQuery] = useState('');
+  const { t } = useTranslation(['navigation', 'form-builder']);
+
+  // Get translated option labels
+  const radioOptions = t('options.radio', { ns: 'form-builder', returnObjects: true }) as string[];
+  const checkboxOptions = t('options.checkbox', { ns: 'form-builder', returnObjects: true }) as string[];
 
   const componentGroups = [
     {
-      title: 'Text Components',
+      title: t('textComponents'),
       icon: <Type className="h-4 w-4" />,
       defaultOpen: true,
       items: [
         {
           id: 'text-input',
-          title: 'Text Input',
+          title: t('components.textInput', { ns: 'form-builder' }),
           icon: <Type className="h-3 w-3" />,
           preview: <Input placeholder="Enter text..." className="h-8 text-xs" readOnly />
         },
         {
           id: 'number-input',
-          title: 'Number',
+          title: t('components.numberInput', { ns: 'form-builder' }),
           icon: <Hash className="h-3 w-3" />,
           preview: <Input type="number" placeholder="0" className="h-8 text-xs" readOnly />
         },
         {
           id: 'email-input',
-          title: 'Email',
+          title: t('components.emailInput', { ns: 'form-builder' }),
           icon: <Mail className="h-3 w-3" />,
           preview: <Input type="email" placeholder="email@example.com" className="h-8 text-xs" readOnly />
         },
         {
           id: 'phone-input',
-          title: 'Phone',
+          title: t('components.phoneInput', { ns: 'form-builder' }),
           icon: <Phone className="h-3 w-3" />,
           preview: <Input type="tel" placeholder="+1 (555) 123-4567" className="h-8 text-xs" readOnly />
         },
         {
           id: 'date-input',
-          title: 'Date',
+          title: t('components.dateInput', { ns: 'form-builder' }),
           icon: <Calendar className="h-3 w-3" />,
           preview: <Input type="date" className="h-8 text-xs" readOnly />
         },
         {
           id: 'textarea',
-          title: 'Text Area',
+          title: t('components.textarea', { ns: 'form-builder' }),
           icon: <Type className="h-3 w-3" />,
           preview: <textarea className="w-full h-16 px-3 py-2 text-xs border border-border rounded resize-none bg-background" placeholder="Enter longer text..." readOnly />
         }
       ]
     },
     {
-      title: 'Tables',
+      title: t('tables'),
       icon: <Table className="h-4 w-4" />,
       defaultOpen: false,
       items: [
         {
           id: 'basic-table',
-          title: 'Basic Table',
+          title: t('components.basicTable', { ns: 'form-builder' }),
           icon: <Table className="h-3 w-3" />,
           preview: (
             <div className="border border-border rounded overflow-hidden">
@@ -140,49 +146,37 @@ export function Sidebar() {
       ]
     },
     {
-      title: 'Selection',
+      title: t('selection'),
       icon: <List className="h-4 w-4" />,
       defaultOpen: false,
       items: [
         {
           id: 'radio-group',
-          title: 'Single Choice',
+          title: t('components.radioGroup', { ns: 'form-builder' }),
           icon: <List className="h-3 w-3" />,
           preview: (
             <div className="space-y-1">
-              <label className="flex items-center gap-2 text-xs">
-                <input type="radio" name="preview" className="text-primary" readOnly />
-                Option 1
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input type="radio" name="preview" className="text-primary" readOnly />
-                Option 2
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input type="radio" name="preview" className="text-primary" readOnly />
-                Option 3
-              </label>
+              {radioOptions.map((option, index) => (
+                <label key={index} className="flex items-center gap-2 text-xs">
+                  <input type="radio" name="preview" className="text-primary" readOnly />
+                  {option}
+                </label>
+              ))}
             </div>
           )
         },
         {
           id: 'checkbox-group',
-          title: 'Multiple Choice',
+          title: t('components.checkboxGroup', { ns: 'form-builder' }),
           icon: <List className="h-3 w-3" />,
           preview: (
             <div className="space-y-1">
-              <label className="flex items-center gap-2 text-xs">
-                <input type="checkbox" className="text-primary" readOnly />
-                Option 1
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input type="checkbox" className="text-primary" readOnly />
-                Option 2
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input type="checkbox" className="text-primary" readOnly />
-                Option 3
-              </label>
+              {checkboxOptions.map((option, index) => (
+                <label key={index} className="flex items-center gap-2 text-xs">
+                  <input type="checkbox" className="text-primary" readOnly />
+                  {option}
+                </label>
+              ))}
             </div>
           )
         }
@@ -205,11 +199,11 @@ export function Sidebar() {
   return (
     <aside className="w-80 bg-primary-light min-h-screen flex flex-col">
       <div className="p-4 border-b border-primary-dark">
-        <h2 className="font-semibold text-lg text-primary-foreground mb-3">Components</h2>
+        <h2 className="font-semibold text-lg text-primary-foreground mb-3">{t('components')}</h2>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search components..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 bg-background border-border"

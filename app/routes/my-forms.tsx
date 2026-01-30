@@ -1,7 +1,10 @@
 import { Header } from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 export default function MyFormsPage() {
+  const { t } = useTranslation('my-forms');
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -9,10 +12,10 @@ export default function MyFormsPage() {
         <div className="max-w-4xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl text-primary">My Forms</CardTitle>
+              <CardTitle className="text-2xl text-primary">{t('title')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">Your personal forms view - Coming soon</p>
+              <p className="text-muted-foreground">{t('comingSoon')}</p>
             </CardContent>
           </Card>
         </div>

@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useSearch } from '@/context/SearchContext';
 
 type SortDirection = 'asc' | 'desc';
 type SortColumn = 'id' | 'titulo' | 'elaborado' | 'revisado' | 'aprobado' | 'fecha';
@@ -14,6 +16,8 @@ type TableRow = {
 };
 
 export function TableView() {
+  const { t } = useTranslation('forms');
+  const { query } = useSearch();
   const [sortColumn, setSortColumn] = useState<SortColumn>('titulo');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [hoveredColumn, setHoveredColumn] = useState<SortColumn | null>(null);
@@ -40,13 +44,25 @@ export function TableView() {
     }
   };
 
-  const sortedData = [...rawData].sort((a, b) => {
-    const aValue = a[sortColumn];
-    const bValue = b[sortColumn];
+  const filteredData = useMemo(() => {
+    if (!query.trim()) return rawData;
+    
+    return rawData.filter(row =>
+      Object.values(row).some(value =>
+        value.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }, [rawData, query]);
 
-    const comparison = aValue.localeCompare(bValue);
-    return sortDirection === 'asc' ? comparison : -comparison;
-  });
+  const sortedData = useMemo(() => {
+    return [...filteredData].sort((a, b) => {
+      const aValue = a[sortColumn];
+      const bValue = b[sortColumn];
+
+      const comparison = aValue.localeCompare(bValue);
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+  }, [filteredData, sortColumn, sortDirection]);
 
   const SortArrow = ({ column }: { column: SortColumn }) => {
     const isActive = sortColumn === column;
@@ -77,6 +93,13 @@ export function TableView() {
     <div className="min-h-screen bg-primary p-8">
       <div className="relative">
 
+        {/* Search Results Count */}
+        {query && (
+          <div className="mb-4 text-sm text-primary-foreground/80">
+            {t('results', { count: sortedData.length })}
+          </div>
+        )}
+
         {/* Table Container */}
         <div className="bg-background rounded-lg overflow-hidden shadow-lg">
           <div className="overflow-x-auto">
@@ -90,7 +113,7 @@ export function TableView() {
                     onMouseLeave={() => setHoveredColumn(null)}
                   >
                     <div className="flex items-center">
-                      <span>ID</span>
+                      <span>{t('table.id')}</span>
                       <SortArrow column="id" />
                     </div>
                   </th>
@@ -101,7 +124,7 @@ export function TableView() {
                     onMouseLeave={() => setHoveredColumn(null)}
                   >
                     <div className="flex items-center">
-                      <span>Title</span>
+                      <span>{t('table.titulo')}</span>
                       <SortArrow column="titulo" />
                     </div>
                   </th>
@@ -112,7 +135,7 @@ export function TableView() {
                     onMouseLeave={() => setHoveredColumn(null)}
                   >
                     <div className="flex items-center">
-                      <span>Created By</span>
+                      <span>{t('table.elaborado')}</span>
                       <SortArrow column="elaborado" />
                     </div>
                   </th>
@@ -123,7 +146,7 @@ export function TableView() {
                     onMouseLeave={() => setHoveredColumn(null)}
                   >
                     <div className="flex items-center">
-                      <span>Reviewed By</span>
+                      <span>{t('table.revisado')}</span>
                       <SortArrow column="revisado" />
                     </div>
                   </th>
@@ -134,7 +157,7 @@ export function TableView() {
                     onMouseLeave={() => setHoveredColumn(null)}
                   >
                     <div className="flex items-center">
-                      <span>Approved By</span>
+                      <span>{t('table.aprobado')}</span>
                       <SortArrow column="aprobado" />
                     </div>
                   </th>
@@ -145,7 +168,7 @@ export function TableView() {
                     onMouseLeave={() => setHoveredColumn(null)}
                   >
                     <div className="flex items-center">
-                      <span>Date</span>
+                      <span>{t('table.fecha')}</span>
                       <SortArrow column="fecha" />
                     </div>
                   </th>
