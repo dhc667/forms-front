@@ -4,13 +4,16 @@ import { InlineInput } from '@/components/ui/inline-input';
 interface InputRendererProps {
   input: Input;
   onRightClick: (input: Input, event: React.MouseEvent) => void;
+  preview?: boolean;
 }
 
-export function InputRenderer({ input, onRightClick }: InputRendererProps) {
+export function InputRenderer({ input, onRightClick, preview = false }: InputRendererProps) {
   const inlineInputProps = {
     id: input.id,
     required: input.required,
-    onContextMenu: (e: React.MouseEvent) => onRightClick(input, e),
+    onContextMenu: preview ? undefined : (e: React.MouseEvent) => onRightClick(input, e),
+    disabled: preview, // Disable in preview mode
+    className: preview ? 'pointer-events-none' : undefined,
   };
 
   switch (input.type) {

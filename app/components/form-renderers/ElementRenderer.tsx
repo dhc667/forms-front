@@ -4,17 +4,19 @@ import { TextRenderer } from './TextRenderer';
 interface ElementRendererProps {
   element: QuestionComponent;
   onRightClick: (element: any, event: React.MouseEvent) => void;
+  preview?: boolean;
 }
 
-export function ElementRenderer({ element, onRightClick }: ElementRendererProps) {
+export function ElementRenderer({ element, onRightClick, preview = false }: ElementRendererProps) {
   const handleContextMenu = (e: React.MouseEvent) => {
+    if (preview) return; // Disable in preview mode
     e.preventDefault();
     onRightClick(element, e);
   };
 
   switch (element.type) {
     case 'text':
-      return <TextRenderer element={element as any} onRightClick={onRightClick} />;
+      return <TextRenderer element={element as any} onRightClick={onRightClick} preview={preview} />;
     case 'table':
       return (
         <div onContextMenu={handleContextMenu} className="inline-block">

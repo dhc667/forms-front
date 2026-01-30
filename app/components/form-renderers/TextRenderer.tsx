@@ -6,11 +6,12 @@ import { LiteralTextRenderer } from './LiteralTextRenderer';
 interface TextRendererProps {
   element: TextElement;
   onRightClick: (element: any, event: React.MouseEvent) => void;
+  preview?: boolean;
 }
 
-export function TextRenderer({ element, onRightClick }: TextRendererProps) {
+export function TextRenderer({ element, onRightClick, preview = false }: TextRendererProps) {
   const handleComponentRightClick = (component: any, event: React.MouseEvent) => {
-    // Stop propagation to prevent parent from handling
+    if (preview) return; // Disable in preview mode
     event.stopPropagation();
     event.preventDefault();
     onRightClick(component, event);
@@ -24,11 +25,13 @@ export function TextRenderer({ element, onRightClick }: TextRendererProps) {
             <LiteralTextRenderer
               text={component}
               onRightClick={handleComponentRightClick}
+              preview={preview}
             />
           ) : (
             <InputRenderer
               input={component}
               onRightClick={handleComponentRightClick}
+              preview={preview}
             />
           )}
         </React.Fragment>
